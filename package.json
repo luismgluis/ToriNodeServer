@@ -1,0 +1,33 @@
+{
+	"name": "torichatbot",
+	"version": "1.0.0",
+	"description": "torichatbot server",
+	"engines": {
+		"node": "16.x.x"
+	},
+	"scripts": {
+		"build": "npm install --only=dev && tsc",
+		"test": "mocha test/*.test.js --exit",
+		"posttest": "npm run lint",
+		"lint": "tslint -p .",
+		"start": "node dist/index.js",
+		"deploy": "tsc --build && gcloud app deploy -v v1"
+	},
+	"author": "luis miguel grajales loaiza",
+	"license": "ISC",
+	"dependencies": {
+		"@google-cloud/debug-agent": "^5.2.8",
+		"@types/node": "^16.11.4",
+		"clone-class": "^1.0.3",
+		"express": "^4.17.2",
+		"firebase-admin": "^10.0.0",
+		"typescript": "^4.4.4"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.13",
+		"@types/prompt": "^1.1.1",
+		"ts-node": "^10.4.0",
+		"typescript": "^4.4.4"
+	},
+	"main": "src/index.ts"
+}

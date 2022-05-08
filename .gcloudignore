@@ -1,0 +1,11 @@
+# Exclude compiled .js files
+
+
+.gcloudignore
+.git
+.gitignore
+
+src/*
+
+# Exclude dependencies
+node_modules/
