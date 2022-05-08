@@ -6,12 +6,11 @@
 		"node": "16.x.x"
 	},
 	"scripts": {
-		"build": "npm install --only=dev && npm install pm2 -g && tsc --build",
+		"build": "npm install --only=dev && tsc",
 		"test": "mocha test/*.test.js --exit",
 		"posttest": "npm run lint",
 		"lint": "tslint -p .",
-		"stop": "pm2 stop tori && pm2 delete tori",
-		"start": "pm2 start dist/index.js --name=tori",
+		"start": "node dist/index.js",
 		"start2": "node dist/index.js",
 		"deploy": "tsc --build && gcloud app deploy -v v1"
 	},
@@ -23,7 +22,6 @@
 		"clone-class": "^1.0.3",
 		"express": "^4.17.2",
 		"firebase-admin": "^10.0.0",
-		"pm2": "^5.2.0",
 		"typescript": "^4.4.4"
 	},
 	"devDependencies": {
