@@ -6,7 +6,7 @@
 		"node": "16.x.x"
 	},
 	"scripts": {
-		"build": "npm install --only=dev && tsc",
+		"build": "npm install --only=dev && npm install pm2 -g && tsc --build",
 		"test": "mocha test/*.test.js --exit",
 		"posttest": "npm run lint",
 		"lint": "tslint -p .",
@@ -23,6 +23,7 @@
 		"clone-class": "^1.0.3",
 		"express": "^4.17.2",
 		"firebase-admin": "^10.0.0",
+		"pm2": "^5.2.0",
 		"typescript": "^4.4.4"
 	},
 	"devDependencies": {
