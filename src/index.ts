@@ -3,6 +3,7 @@ import * as express from "express";
 import Room from "./classes/Room";
 import Business from "./classes/Business";
 import Dictionary from "./classes/Dictionary";
+import utils from "./libs/utils/utils";
 
 const TAG = "index";
 let mysoftWifiSerial = "spacoma123";
@@ -25,12 +26,20 @@ const onStart = () => {
 	const app = express();
 	const api = myApp.api;
 
-	let listeners: Dictionary<any> = {};
+	let listeners: Record<string, () => { creationDate: string; room: Room }> =
+		{};
+
 	const startBusinessRoom = (idBusiness: string, idRoom: string) => {
 		const startListener = async (business: Business, room: Room) => {
 			try {
 				const unsubs = await room.startListener(myApp, business);
-				listeners[room.id] = () => unsubs();
+				listeners[room.id] = () => {
+					unsubs();
+					return {
+						creationDate: utils.dates.dateNowString(true, true),
+						room: room,
+					};
+				};
 				await room.sendMessageFast("Hola");
 			} catch (error) {
 				console.log(error);
@@ -71,14 +80,17 @@ const onStart = () => {
 
 	const exit = () => {
 		let counter = 0;
+		let message = "";
 		Object.keys(listeners).forEach((item) => {
 			if (typeof listeners[item] === "function") {
-				listeners[item]();
+				const res = listeners[item]();
+				message += res.creationDate + " - " + res.room.id + "\n";
 				listeners[item] = null;
+				delete listeners[item];
 				counter++;
 			}
 		});
-		return counter;
+		return message + "\n" + "listeners closed (" + counter + ")";
 		// process.exit(); // considerable pero no necesario, cuidao
 	};
 
@@ -123,7 +135,7 @@ const onStart = () => {
 	app.get("/close", (req, res) => {
 		try {
 			const resultExit = exit();
-			res.send("listeners closed (" + resultExit + ")");
+			res.send(resultExit);
 		} catch (error) {}
 	});
 
